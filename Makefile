@@ -7,31 +7,39 @@
 
 CXX = g++
 
-BINARY = output.exe
+INCDIR = inc
+
+TARGET = output.exe
 SOURCES = $(wildcard *.cpp)
 OBJECTS = $(SOURCES:.cpp=.o)
+SRCDIR = .
 
-CPPFLAGS = -Wall -Wextra -Werror \
--pedantic-errors -std=c++20
+CPPFLAGS = -Wall -Wextra -Werror -pedantic-errors \
+-std=c++20 -I $(INCDIR)
 
 # Entry.
 
-all: $(BINARY)
+all: $(TARGET)
 
 # This rule compiles the main program. It depends on object files.
 
-$(BINARY): $(OBJECTS)
+$(TARGET): $(OBJECTS)
 	$(CXX) $? -o $@
 
 # Each object file depends on its source files.
-# $< Takes the first element (file name)
-# $? Takes all the element
-# $@ Takes the name of the objective (objective)
+# $< Takes the source file name.
+# $? Takes all the element.
+# $@ Takes the target's name.
 
-%.o: %.cpp %.h
-	$(CXX) -c $< $(CPPFLAGS) -o $@
+#$@: $<
+%.o: %.cpp
+	$(CXX) -c -MD $(CPPFLAGS) $< -o $@
+
+-include *.d
 
 # Just cleaning the output files.
 
+.PHONY: clean
+
 clean:
-	del $(OBJECTS) $(BINARY) *~
+	del $(OBJECTS) $(TARGET) *.d *~
