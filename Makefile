@@ -1,7 +1,7 @@
 # The main structure of this file is this:
 
-# objective: dependencies
-# 	instructions
+# target: prerequisites
+# [tab]recipe
 
 # Variables.
 
